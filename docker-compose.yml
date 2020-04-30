@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  bot:
+    build: .
+    env_file:
+      - .env
+    environment:
+      - TARGET_USERNAME=neiltyson
+    volumes:
+      - ./daily_briefs:/output

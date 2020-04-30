@@ -1,0 +1,2 @@
+class TwitterBotError(Exception):
+    pass
