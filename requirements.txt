@@ -17,6 +17,7 @@ Pillow==7.1.2
 pycparser==2.20
 Pyphen==0.9.5
 PySocks==1.7.1
+qrcode==6.1
 regex==2020.4.4
 requests==2.23.0
 requests-oauthlib==1.3.0

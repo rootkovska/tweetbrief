@@ -1,4 +1,0 @@
-{
-    "python.autoComplete.extraPaths": ["./bot"],
-    "python.formatting.provider": "black"
-}

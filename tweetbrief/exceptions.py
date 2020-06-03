@@ -1,0 +1,2 @@
+class TweetBriefError(Exception):
+    pass
