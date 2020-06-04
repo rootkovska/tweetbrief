@@ -1,6 +1,6 @@
 TARGET_USERNAME?=golemproject
-LOCAL_PATH?=$(shell pwd)
-CONTAINER_PATH?=/output
+HOST_PATH?=$(shell pwd)
+LOCAL_PATH?=/output
 
 check_defined = \
     $(strip $(foreach 1,$1, \
@@ -53,7 +53,7 @@ docker-run: ## Build and run the `tweetbrief` service in a Docker container
 		--name=tweetbrief
 		--env-file=.env
 		--env=TARGET_USERNAME=$(TARGET_USERNAME)
-		--volume=$(LOCAL_PATH):$(CONTAINER_PATH)	
+		--volume=$(HOST_PATH):$(LOCAL_PATH)	
 
 .DEFAULT_GOAL: help
 .PHONY: help

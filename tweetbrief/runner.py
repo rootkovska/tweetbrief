@@ -42,7 +42,7 @@ def main() -> None:
     url2qrcode = os.getenv("URL2QR", True)
 
     # storage parameters
-    local_path = Path(os.getenv("LOCAL_PATH", None))
+    local_path = os.getenv("LOCAL_PATH", None)
     dropbox_access_token = os.getenv("DROPBOX_ACCESS_TOKEN", None)
 
     try:
@@ -73,19 +73,22 @@ def main() -> None:
 
     if local_path is not None:
         try:
-            if not os.path.isdir(local_path):
-                Path(local_path).mkdir(parents=True)
+            local_path = Path(local_path)
+            if not local_path.is_dir():
+                local_path.mkdir(parents=True)
             if not os.access(local_path, os.W_OK):
                 raise PermissionError(f"No write permissions on `{local_path}`!")
         except (FileExistsError, PermissionError):
-            logger.exception(f"Wrong local path `{local_path}`!")
+            logger.error(f"The path `{local_path}` is broken!")
+            raise
 
     if dropbox_access_token is not None:
         try:
             dbx = Dropbox(dropbox_access_token)
             dbx.users_get_current_account()
         except (AuthError, BadInputError):
-            logger.exception(f"Connection to Dropbox refused!")
+            logger.error("`DROPBOX_ACCESS_TOKEN` is invalid!")
+            raise
 
     logger.info("Parameters loaded")
     logger.info("Extracting tweets...")
@@ -105,15 +108,15 @@ def main() -> None:
         logger.info("Saving locally...")
 
         brief_path = local_path / filename
-        with open(local_path, "rb") as f:
-            f.write(pdf)
+        with open(brief_path, "wb") as f:
+            f.write(pdf.getbuffer())
 
         logger.info("Brief saved")
     if dropbox_access_token is not None:
         logger.info("Uploading to Dropbox...")
 
         brief_path = Path("/") / filename
-        dropbox.files_upload(pdf, brief_path)
+        dbx.files_upload(pdf.getvalue(), brief_path.as_posix())
 
         logger.info("Brief uploaded")
 
