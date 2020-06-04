@@ -4,6 +4,9 @@ from datetime import datetime
 from exceptions import TweetBriefError
 from pathlib import Path
 
+from dropbox import Dropbox
+from dropbox.exceptions import AuthError, BadInputError
+
 from exporter.pdf_exporter import PDFExporter
 from twitterapi.tweet_extractor import TweetExtractor
 
@@ -24,14 +27,23 @@ def main() -> None:
     if "CONSUMER_SECRET" not in os.environ:
         raise TweetBriefError("CONSUMER_SECRET not found!")
 
+    if not any(storage in os.environ for storage in ["LOCAL_PATH", "DROPBOX_ACCESS_TOKEN"]):
+        raise TweetBriefError("No storage found!")
+
+    # Twitter API parameters
     consumer_key = os.getenv("CONSUMER_KEY")
     consumer_secret = os.getenv("CONSUMER_SECRET")
+
+    # bot parameters
     target_username = os.getenv("TARGET_USERNAME")
     single_author_max_tweets = os.getenv("SINGLE_AUTHOR_MAX_TWEETS", 3)
     brief_period = os.getenv("BRIEF_PERIOD", 1)
     brief_max_tweets = os.getenv("BRIEF_MAX_TWEETS", 30)
-    brief_path = os.getenv("BRIEF_PATH", os.getcwd())
     url2qrcode = os.getenv("URL2QR", True)
+
+    # storage parameters
+    local_path = Path(os.getenv("LOCAL_PATH", None))
+    dropbox_access_token = os.getenv("DROPBOX_ACCESS_TOKEN", None)
 
     try:
         single_author_max_tweets = int(single_author_max_tweets)
@@ -55,17 +67,25 @@ def main() -> None:
         logger.warning("BRIEF_MAX_TWEETS must be an integer! Setting to default (30)...")
         brief_max_tweets = 30
 
-    try:
-        if not os.path.isdir(brief_path):
-            Path(brief_path).mkdir(parents=True)
-        if not os.access(brief_path, os.W_OK):
-            raise PermissionError(f"No write permissions on `{brief_path}`!")
-    except (FileExistsError, PermissionError):
-        logger.exception(f"Wrong path `{brief_path}`!")
-
     if not isinstance(url2qrcode, bool):
         logger.warning("URL2QR must be a boolean!Setting to default (True)...")
         url2qrcode = True
+
+    if local_path is not None:
+        try:
+            if not os.path.isdir(local_path):
+                Path(local_path).mkdir(parents=True)
+            if not os.access(local_path, os.W_OK):
+                raise PermissionError(f"No write permissions on `{local_path}`!")
+        except (FileExistsError, PermissionError):
+            logger.exception(f"Wrong local path `{local_path}`!")
+
+    if dropbox_access_token is not None:
+        try:
+            dbx = Dropbox(dropbox_access_token)
+            dbx.users_get_current_account()
+        except (AuthError, BadInputError):
+            logger.exception(f"Connection to Dropbox refused!")
 
     logger.info("Parameters loaded")
     logger.info("Extracting tweets...")
@@ -77,11 +97,25 @@ def main() -> None:
 
     logger.info("Exporting brief...")
 
-    today = datetime.now().strftime("%Y-%m-%d")
-    filename = f"{brief_path}/{target_username}-{today}.pdf"
-
     exporter = PDFExporter(url2qrcode)
-    exporter.export(tweets_in_brief, filename)
+    pdf = exporter.export(tweets_in_brief)
+
+    filename = f"{target_username}_{datetime.now().strftime('%Y-%m-%d')}.pdf"
+    if local_path is not None:
+        logger.info("Saving locally...")
+
+        brief_path = local_path / filename
+        with open(local_path, "rb") as f:
+            f.write(pdf)
+
+        logger.info("Brief saved")
+    if dropbox_access_token is not None:
+        logger.info("Uploading to Dropbox...")
+
+        brief_path = Path("/") / filename
+        dropbox.files_upload(pdf, brief_path)
+
+        logger.info("Brief uploaded")
 
 
 if __name__ == "__main__":

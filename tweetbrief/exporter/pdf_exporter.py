@@ -1,5 +1,6 @@
 import logging
 import re
+from io import BytesIO
 from typing import List
 
 from weasyprint import CSS, HTML
@@ -14,15 +15,14 @@ class PDFExporter:
         self.logger = logging.getLogger(__name__)
         self.html_exporter = HTMLExporter(url2qrcode)
 
-    def export(self, tweets: List[SimpleTweet], filename: str) -> None:
+    def export(self, tweets: List[SimpleTweet]) -> BytesIO:
         self.logger.info("Generating PDF...")
 
+        pdf = BytesIO()
         html = self.html_exporter.as_string(tweets)
         style = CSS(string=pdf_style)
+        HTML(string=html).write_pdf(pdf, stylesheets=[style])
 
         self.logger.info("PDF generated")
 
-        with open(f"{filename}.html", "w") as f:
-            f.write(html)
-
-        HTML(string=html).write_pdf(filename, stylesheets=[style])
+        return pdf
