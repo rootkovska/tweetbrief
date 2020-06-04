@@ -1,6 +1,6 @@
 TARGET_USERNAME?=golemproject
-HOST_DIR?=daily_briefs
-BRIEF_DIR?=daily_briefs
+HOST_PATH?=$(shell pwd)
+BRIEF_PATH?=$(shell pwd)
 
 check_defined = \
     $(strip $(foreach 1,$1, \

@@ -10,7 +10,7 @@ from twitterapi.simple_tweet import SimpleTweet
 
 
 class TweetExtractor:
-    def __init__(self, consumer_key: str, consumer_secret: str, tweet_mode: str = "cmp") -> None:
+    def __init__(self, consumer_key: str, consumer_secret: str, tweet_mode: str = "compat") -> None:
         self.logger = logging.getLogger(__name__)
         self.auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         self.api = tweepy.API(self.auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
@@ -35,8 +35,8 @@ class TweetExtractor:
             map(
                 lambda author: [
                     SimpleTweet(
-                        tweet.user.screen_name,
-                        tweet.text if self.tweet_mode == "cmp" else tweet.full_text,
+                        tweet.user.name,
+                        tweet.text if self.tweet_mode == "compat" else tweet.full_text,
                         tweet.retweet_count,
                     )
                     for tweet in self.extract_user_top_tweets(author.screen_name, single_author_max_tweets, days_back)

@@ -10,25 +10,21 @@ html_style = """
         }
         .container {
             columns: 2;
-            column-gap: 7px;
+            column-gap: 20px;
             column-fill: balance;
         }
         .tweet {
             display: flex;
-            margin-bottom: 7px;
-            padding: 5px;
-            border-radius: 3px;
-            background-color: lightskyblue;
-        }
-        .container .tweet:nth-child(odd) {
-            background-color: whitesmoke;
+            margin-bottom: 10px;
+            padding-bottom: 9px;
+            border-bottom: 1px solid black;
         }
         .tweet-text {
             flex: 1;
             text-align: justify;
         }
         .tweet-qrcode {
-            margin-left: 7px;
+            margin-left: 10px;
         }
     </style>
 """

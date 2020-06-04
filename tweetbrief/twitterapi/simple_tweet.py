@@ -1,6 +1,5 @@
-from typing import List
-
 import html
+from typing import List
 
 from utils.regex_patterns import http_pattern, url_pattern
 
