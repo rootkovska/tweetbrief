@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  tweetbrief:
+    build: .
+    env_file: 
+      - .env
+    environment:
+      - TARGET_USERNAME
+      - BRIEF_OUTPUT
+    volumes:
+      - ${HOST_OUTPUT}:${BRIEF_OUTPUT}

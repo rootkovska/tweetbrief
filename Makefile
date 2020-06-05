@@ -1,6 +1,11 @@
-TARGET_USERNAME?=golemproject
-HOST_PATH?=$(shell pwd)
-LOCAL_PATH?=/output
+SHELL := /bin/sh
+include .env
+export $(shell sed 's/=.*//' .env)
+export TARGET_USERNAME ?= golemproject
+export HOST_OUTPUT = ./briefs
+
+run: export BRIEF_OUTPUT ?= ./briefs
+docker-run: export BRIEF_OUTPUT ?= /output
 
 check_defined = \
     $(strip $(foreach 1,$1, \
@@ -12,7 +17,11 @@ __check_defined = \
 
 .PHONY: install
 install: ## Install requirements
-	python -m pip install -r requirements.txt
+	pipenv install
+
+.PHONY: install-dev
+install-dev: ## Install dev requirements
+	pipenv install --dev
 
 .PHONY: clean-pyc
 clean-pyc: ## Remove python artifacts
@@ -29,31 +38,20 @@ clean-build: ## Remove build artifact
 
 .PHONY: isort
 isort: ## Sort import statements
-	python -m pip install isort==4.3.21
-	python -m isort --skip-glob=.tox --recursive tweetbrief/
+	pipenv run python -m isort --skip-glob=.tox --recursive tweetbrief/
 
 .PHONY: black
 black: ## Check style with black
-	python -m pip install black==19.10b0
-	python -m black --line-length=119 --exclude=.tox tweetbrief/
+	printenv
+	pipenv run python -m black --line-length=119 --exclude=.tox tweetbrief/
 
 .PHONY: run
-run: ## Run the `tweetbrief` service on the local machine
-	@:$(call check_defined, CONSUMER_KEY)
-	@:$(call check_defined, CONSUMER_SECRET)
-	python tweetbrief/runner.py
+run: prerun ## Run the `tweetbrief` service on the local machine
+	pipenv run python tweetbrief/runner.py
 
 .PHONY: docker-run
-docker-run: ## Build and run the `tweetbrief` service in a Docker container
-	docker build \
-		--file=Dockerfile \
-		--tag=wildland/tweetbrief .
-	docker run \
-		--detach=false
-		--name=tweetbrief
-		--env-file=.env
-		--env=TARGET_USERNAME=$(TARGET_USERNAME)
-		--volume=$(HOST_PATH):$(LOCAL_PATH)	
+docker-run: prerun ## Build and run the `tweetbrief` service in a Docker container
+	docker-compose up --build
 
 .DEFAULT_GOAL: help
 .PHONY: help
@@ -61,3 +59,8 @@ help:
 	@awk -F ':|##' '/^[^\t].+?:.*?##/ {\
     printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF \
     }' $(MAKEFILE_LIST)
+
+.PHONY: prerun
+prerun:
+	@:$(call check_defined, CONSUMER_KEY)
+	@:$(call check_defined, CONSUMER_SECRET)

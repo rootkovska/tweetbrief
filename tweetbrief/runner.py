@@ -27,8 +27,8 @@ def main() -> None:
     if "CONSUMER_SECRET" not in os.environ:
         raise TweetBriefError("CONSUMER_SECRET not found!")
 
-    if not any(storage in os.environ for storage in ["LOCAL_PATH", "DROPBOX_ACCESS_TOKEN"]):
-        raise TweetBriefError("No storage found!")
+    if not any(storage in os.environ for storage in ["BRIEF_OUTPUT", "DROPBOX_ACCESS_TOKEN"]):
+        raise TweetBriefError("No storage provided!")
 
     # Twitter API parameters
     consumer_key = os.getenv("CONSUMER_KEY")
@@ -42,7 +42,7 @@ def main() -> None:
     url2qrcode = os.getenv("URL2QR", True)
 
     # storage parameters
-    local_path = os.getenv("LOCAL_PATH", None)
+    brief_output = os.getenv("BRIEF_OUTPUT", None)
     dropbox_access_token = os.getenv("DROPBOX_ACCESS_TOKEN", None)
 
     try:
@@ -71,15 +71,15 @@ def main() -> None:
         logger.warning("URL2QR must be a boolean!Setting to default (True)...")
         url2qrcode = True
 
-    if local_path is not None:
+    if brief_output is not None:
         try:
-            local_path = Path(local_path)
-            if not local_path.is_dir():
-                local_path.mkdir(parents=True)
-            if not os.access(local_path, os.W_OK):
-                raise PermissionError(f"No write permissions on `{local_path}`!")
+            brief_output = Path(brief_output)
+            if not brief_output.is_dir():
+                brief_output.mkdir(parents=True)
+            if not os.access(brief_output, os.W_OK):
+                raise PermissionError(f"No write permissions on `{brief_output}`!")
         except (FileExistsError, PermissionError):
-            logger.error(f"The path `{local_path}` is broken!")
+            logger.error(f"The path `{brief_output}` is broken!")
             raise
 
     if dropbox_access_token is not None:
@@ -104,10 +104,10 @@ def main() -> None:
     pdf = exporter.export(tweets_in_brief)
 
     filename = f"{target_username}_{datetime.now().strftime('%Y-%m-%d')}.pdf"
-    if local_path is not None:
+    if brief_output is not None:
         logger.info("Saving locally...")
 
-        brief_path = local_path / filename
+        brief_path = brief_output / filename
         with open(brief_path, "wb") as f:
             f.write(pdf.getbuffer())
 

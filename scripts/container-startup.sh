@@ -9,7 +9,7 @@ printenv | sed 's/^\(.*\)$/export \1/g' > "${scriptPath}/.env.sh"
 chmod +x "${scriptPath}/.env.sh"
 
 # Create crontab file in cron directory
-echo "* * */${cronDays} * * ${scriptPath}/tweetbrief-execution.sh >> /var/log/cron.log 2>&1
+echo "*/${cronDays} * * * * ${scriptPath}/tweetbrief-execution.sh >> /var/log/cron.log 2>&1
 # This extra line made it a valid crone" > /etc/cron.d/bot
 
 # Give execution rights on cron job

@@ -1,0 +1,49 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+black = "*"
+isort = "*"
+
+[packages]
+appdirs = "*"
+attrs = "*"
+bleach = "*"
+cairocffi = "*"
+certifi = "*"
+cffi = "*"
+chardet = "*"
+click = "*"
+cssselect2 = "*"
+defusedxml = "*"
+dropbox = "*"
+html5lib = "*"
+idna = "*"
+oauthlib = "*"
+pathspec = "*"
+pycparser = "*"
+qrcode = "*"
+regex = "*"
+requests = "*"
+requests-oauthlib = "*"
+six = "*"
+tinycss2 = "*"
+toml = "*"
+tweepy = "*"
+typed-ast = "*"
+urllib3 = "*"
+webencodings = "*"
+yattag = "*"
+CairoSVG = "*"
+Pillow = "*"
+Pyphen = "*"
+PySocks = "*"
+WeasyPrint = "*"
+
+[requires]
+python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true

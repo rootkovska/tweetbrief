@@ -11,10 +11,12 @@ RUN apt-get update \
     cron \
     && rm -rf /var/lib/apt/lists/*
 
-COPY bin/* src/* requirements.txt /app/
-RUN chmod +x /app/container-startup.sh /app/tweetbrief-execution.sh
+COPY scripts/. tweetbrief/. Pipfile Pipfile.lock /app/
+WORKDIR /app
 
-RUN pip install --no-cache-dir -r /app/requirements.txt
-RUN mkdir /output
+RUN chmod +x container-startup.sh tweetbrief-execution.sh
+RUN pip install --no-cache-dir pipenv
+RUN pipenv lock --requirements > requirements.txt \
+    && pip install --no-cache-dir -r requirements.txt
 
 CMD ["/app/container-startup.sh"] 
