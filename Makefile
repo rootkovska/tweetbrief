@@ -25,16 +25,16 @@ install-dev: ## Install dev requirements
 
 .PHONY: clean-pyc
 clean-pyc: ## Remove python artifacts
-	find tweetbrief/ -name "__pycache__" -exec rm --force --recursive {} +
-	find tweetbrief/ -name "*.pyc" -exec rm --force {} +
-	find tweetbrief/ -name "*.pyo" -exec rm --force {} +
-	find tweetbrief/ -name "*~" -exec rm --force {} +
+	find tweetbrief/ -name "__pycache__" -exec rm -rf {} +
+	find tweetbrief/ -name "*.pyc" -exec rm -f {} +
+	find tweetbrief/ -name "*.pyo" -exec rm -f {} +
+	find tweetbrief/ -name "*~" -exec rm -f {} +
 
 .PHONY: clean-build
 clean-build: ## Remove build artifact
-	rm --force --recursive tweetbrief/build/
-	rm --force --recursive tweetbrief/dist/
-	rm --force --recursive tweetbrief/*.egg-info
+	rm -rf tweetbrief/build/
+	rm -rf tweetbrief/dist/
+	rm -rf tweetbrief/*.egg-info
 
 .PHONY: isort
 isort: ## Sort import statements
