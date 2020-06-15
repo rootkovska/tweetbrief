@@ -1,0 +1,79 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  Tweetbrief:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: Tweetbrief
+      Handler: runner.lambda_handler
+      Role: !GetAtt TweetbriefRole.Arn
+      Code:
+        ZipFile: |
+          def lambda_handler(event, context):
+            pass
+      Runtime: python3.6
+      MemorySize: 128
+      Timeout: 300
+      Environment:
+        Variables:
+          CONSUMER_KEY: !Ref ConsumerKey
+          CONSUMER_SECRET: !Ref ConsumerSecret
+          DROPBOX_ACCESS_TOKEN: !Ref DropboxAccessToken
+          TARGET_USERNAME: !Ref TargetUsername
+  TweetbriefRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: TweetbriefRole
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: AWSLambdaBasicExecutionRole
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: logs:*
+                Resource: arn:aws:logs:*:*:*
+  TweetbriefSchedule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: TweetbriefSchedule
+      ScheduleExpression: !Sub cron(* * */${BriefPeriod} * ? *)
+      Targets:
+        - Id: TweetbriefScheduleTarget
+          Arn:
+            Fn::GetAtt:
+              - Tweetbrief
+              - Arn
+      State: ENABLED
+  TweetbriefInvokeLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref Tweetbrief
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn:
+        Fn::GetAtt:
+          - TweetbriefSchedule
+          - Arn
+Parameters:
+  ConsumerKey:
+    Type: String
+  ConsumerSecret:
+    Type: String
+  DropboxAccessToken:
+    Type: String
+  TargetUsername:
+    Type: String
+  BriefPeriod:
+    Type: Number
+    Default: 1
+    MinValue: 1
+    MaxValue: 7

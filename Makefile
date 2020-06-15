@@ -42,7 +42,6 @@ isort: ## Sort import statements
 
 .PHONY: black
 black: ## Check style with black
-	printenv
 	pipenv run python -m black --line-length=119 --exclude=.tox tweetbrief/
 
 .PHONY: run
@@ -53,7 +52,7 @@ run: prerun ## Run the `tweetbrief` service on the local machine
 docker-run: prerun ## Build and run the `tweetbrief` service in a Docker container
 	docker-compose up --build
 
-.DEFAULT_GOAL: help
+.DEFAULT_GOAL := help
 .PHONY: help
 help:
 	@awk -F ':|##' '/^[^\t].+?:.*?##/ {\

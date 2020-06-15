@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Load environment variables
 scriptPath=$(dirname $(readlink -f "${0}"))

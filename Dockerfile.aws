@@ -1,0 +1,19 @@
+FROM lambci/lambda:build-python3.6
+
+RUN yum -y update \
+    && yum -y install pango
+
+COPY tweetbrief/. Pipfile Pipfile.lock /var/task/
+
+RUN python -m pip install --upgrade pip \
+    && python -m pip install pipenv \
+    && python -m pipenv lock --requirements > requirements.txt \
+    && python -m pip install --no-cache-dir -r requirements.txt --target /var/task/ \
+    && rm Pipfile Pipfile.lock requirements.txt
+RUN mkdir -p /var/task/lib \
+    && cp -P /usr/lib64/{libpango*,libXft*,libthai*} /var/task/lib/ \
+    && find /var/task/lib/* -type f -name 'libpango-1.0*' -exec sh -c 'ln -s $(basename {}) /var/task/lib/pango-1.0' \; \
+    && find /var/task/lib/* -type f -name 'libpangocairo-1.0*' -exec sh -c 'ln -s $(basename {}) /var/task/lib/pangocairo-1.0' \;
+RUN zip -9yr function.zip ./
+
+CMD ["sh", "-c", "aws lambda update-function-code --function-name Tweetbrief --zip-file fileb://function.zip"]

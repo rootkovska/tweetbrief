@@ -3,19 +3,27 @@ import os
 from datetime import datetime
 from exceptions import TweetBriefError
 from pathlib import Path
+from typing import Any
 
+from aws_lambda_context import LambdaContext
 from dropbox import Dropbox
 from dropbox.exceptions import AuthError, BadInputError
 
 from exporter.pdf_exporter import PDFExporter
 from twitterapi.tweet_extractor import TweetExtractor
 
-log_level = os.getenv("LOG_LEVEL", logging.INFO)
-logging.basicConfig(level=log_level)
+logger = logging.getLogger()
+if logger.hasHandlers():
+    logger.setLevel(logging.INFO)
+else:
+    logging.basicConfig(format="%(asctime)s %(message)s", level=logging.INFO)
+
+
+def lambda_handler(event: Any, context: LambdaContext) -> None:
+    main()
 
 
 def main() -> None:
-    logger = logging.getLogger(__name__)
     logger.info("Loading parameters...")
 
     if "TARGET_USERNAME" not in os.environ:
