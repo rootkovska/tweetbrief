@@ -45,7 +45,7 @@ Resources:
     Type: AWS::Events::Rule
     Properties:
       Name: TweetbriefSchedule
-      ScheduleExpression: !Sub cron(* * */${BriefPeriod} * ? *)
+      ScheduleExpression: !Sub cron(0 0 */${BriefPeriod} * ? *)
       Targets:
         - Id: TweetbriefScheduleTarget
           Arn:
