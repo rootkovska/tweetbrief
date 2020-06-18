@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  tweetbrief:
+    container_name: tweetbrief
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    image: tweetbrief
+    env_file: 
+      - .env
+    environment:
+      # - CONSUMER_KEY=
+      # - CONSUMER_SECRET=
+      # - TARGET_USERNAME=
+      - HOST_OUTPUT=./output
+      - BRIEF_OUTPUT=/output
+      - BRIEF_PERIOD=3
+      - BRIEF_MAX_TWEETS=50
+      - SINGLE_AUTHOR_MAX_TWEETS=2
+      - URL2QR=False
+    volumes:
+      # dir for resulting briefs
+      - ${HOST_OUTPUT}:${BRIEF_OUTPUT}
