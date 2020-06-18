@@ -53,7 +53,7 @@ if [[ ! ( -z "${HOST_OUTPUT}" && -z "${BRIEF_OUTPUT}" ) ]]; then
 
     docker run -d \
         --name tweetbrief \
-        -e CONSUMER_SECRET \
+        -e CONSUMER_KEY \
         -e CONSUMER_SECRET \
         -e BRIEF_OUTPUT \
         -e TARGET_USERNAME \
@@ -65,7 +65,7 @@ else
 
     docker run -d \
         --name tweetbrief \
-        -e CONSUMER_SECRET \
+        -e CONSUMER_KEY \
         -e CONSUMER_SECRET \
         -e DROPBOX_ACCESS_TOKEN \
         -e TARGET_USERNAME \
