@@ -85,6 +85,8 @@ The deployment process are peformed using one of the available scripts:
 
 - `./scripts/docker-deployment.sh` for local deployment.
 
+- `./docker-compose.yaml` for local deployments via `docker-compose`.
+
 Both of them require Docker and Docker Compose installed. In case of AWS, it is also needed to have AWS CLI v2.
 
 ## How
