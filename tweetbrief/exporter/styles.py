@@ -1,6 +1,14 @@
 html_style = """
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans:ExtraCondensed+ExtraLight" />
     <style>
+        h1 {
+            text-align: center;
+            font-family: "Noto Sans";
+            font-style: normal;
+            font-weight: bold;
+            font-size: 14px;
+            line-height: 1;
+        }
         body {
             font-family: "Noto Sans";
             font-style: normal;

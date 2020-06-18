@@ -7,7 +7,7 @@ from yattag import Doc
 from exporter.styles import html_style
 from qr.qrcoder import QRCoder
 from twitterapi.simple_tweet import SimpleTweet
-
+from datetime import date, datetime
 
 class HTMLExporter:
     def __init__(self, url2qrcode: bool = False) -> None:
@@ -24,6 +24,8 @@ class HTMLExporter:
         with tag("html"):
             with tag("head"):
                 self.doc.asis(html_style)
+            with tag("h1"):
+                text(f"Tweetbrief generated on {datetime.now().strftime('%Y-%m-%d @ %H:%M:%S')}")
             with tag("body"):
                 with tag("div", klass="container"):
                     for tweet in tweets:
