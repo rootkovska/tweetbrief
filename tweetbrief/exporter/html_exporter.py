@@ -15,7 +15,7 @@ class HTMLExporter:
         self.doc = Doc()
         self.url2qrcode = url2qrcode
 
-    def as_string(self, tweets: List[SimpleTweet]) -> str:
+    def as_string(self, tweets: List[SimpleTweet], title: str, subtitle: str) -> str:
         self.logger.info("Generating HTML...")
 
         tag = self.doc.tag
@@ -25,7 +25,9 @@ class HTMLExporter:
             with tag("head"):
                 self.doc.asis(html_style)
             with tag("h1"):
-                text(f"Tweetbrief generated on {datetime.now().strftime('%Y-%m-%d @ %H:%M:%S')}")
+                text(title)
+            with tag("h2"):
+                text(subtitle)
             with tag("body"):
                 with tag("div", klass="container"):
                     for tweet in tweets:

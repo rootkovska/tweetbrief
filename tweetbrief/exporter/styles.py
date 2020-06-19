@@ -9,12 +9,21 @@ html_style = """
             font-size: 14px;
             line-height: 1;
         }
+        h2 {
+            text-align: center;
+            font-family: "Noto Sans";
+            font-style: normal;
+            font-weight: normal;
+            font-size: 8px;
+            color: gray;
+            line-height: 1;
+        }
         body {
             font-family: "Noto Sans";
             font-style: normal;
             font-weight: normal;
             font-size: 8px;
-            line-height: 1.25;
+            line-height: 1;
         }
         .container {
             columns: 2;

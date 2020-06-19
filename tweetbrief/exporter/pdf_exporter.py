@@ -15,11 +15,11 @@ class PDFExporter:
         self.logger = logging.getLogger(__name__)
         self.html_exporter = HTMLExporter(url2qrcode)
 
-    def export(self, tweets: List[SimpleTweet]) -> BytesIO:
+    def export(self, tweets: List[SimpleTweet], title: str, subtitle: str) -> BytesIO:
         self.logger.info("Generating PDF...")
 
         pdf = BytesIO()
-        html = self.html_exporter.as_string(tweets)
+        html = self.html_exporter.as_string(tweets, title=title, subtitle=subtitle)
         style = CSS(string=pdf_style)
         HTML(string=html).write_pdf(pdf, stylesheets=[style])
 
