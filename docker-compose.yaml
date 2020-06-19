@@ -12,11 +12,13 @@ services:
     environment:
       # - CONSUMER_KEY=
       # - CONSUMER_SECRET=
+      # - DROPBOX_ACCESS_TOKEN=
       # - TARGET_USERNAME=
-      - HOST_OUTPUT=./output
+      # - HOST_OUTPUT=./output
+      # - BRIEF_OUTPUT=/output
       - BRIEF_OUTPUT=/output
-      - BRIEF_PERIOD=3
-      - BRIEF_MAX_TWEETS=50
+      - BRIEF_PERIOD=1
+      - BRIEF_MAX_TWEETS=32
       - SINGLE_AUTHOR_MAX_TWEETS=2
       - URL2QR=False
     volumes:
