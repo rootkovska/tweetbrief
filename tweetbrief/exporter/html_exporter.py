@@ -45,17 +45,22 @@ class HTMLExporter:
             urls = tweet.extract_urls(remove_http=True)
             tweet.replace_urls("[QR]")
 
-        with tag("div", klass="tweet"):
-            with tag("div", klass="tweet-text"):
-                with tag("b"):
-                    text(f"{tweet.author}: ")
-                text(tweet.text)
-
-            if self.url2qrcode:
-                qrcoder = QRCoder(box_size=5, border=0)
-                for url in urls:
-                    with tag("div", klass="tweet-qrcode"):
-                        self._inline_svg2data_uri(qrcoder.generate_inline_svg(url))
-
+        with tag("div", klass="tweet-box"):
+            with tag("div", klass="tweet-box-content"):
+                with tag("div", klass="tweet-text"):
+                    with tag("b"):
+                        text(f"{tweet.author}: ")
+                    text(tweet.text)
+                if self.url2qrcode:
+                    qrcoder = QRCoder(box_size=5, border=0)
+                    for url in urls:
+                        with tag("div", klass="tweet-qrcode"):
+                            self._inline_svg2data_uri(qrcoder.generate_inline_svg(url))
+            with tag("div", klass="tweet-stats"):
+                with tag("div"):
+                    text (f"{tweet.created_at} ➥{tweet.retweet_count} ★{tweet.favorite_count}")
+                with tag("div"):
+                    text (f"@{tweet.uid} id:{tweet.id}")
+    
     def _inline_svg2data_uri(self, inline_svg: str) -> None:
         self.doc.stag("img", src=f"data:image/svg+xml;charset=utf-8;base64,{b64encode(inline_svg).decode()}")

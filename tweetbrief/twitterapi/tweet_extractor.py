@@ -35,9 +35,13 @@ class TweetExtractor:
             map(
                 lambda author: [
                     SimpleTweet(
+                        tweet.id_str,
+                        tweet.user.screen_name,
                         tweet.user.name,
                         tweet.text if self.tweet_mode == "compat" else tweet.full_text,
                         tweet.retweet_count,
+                        tweet.favorite_count,
+                        tweet.created_at,
                     )
                     for tweet in self.extract_user_top_tweets(author.screen_name, single_author_max_tweets, days_back)
                 ],
