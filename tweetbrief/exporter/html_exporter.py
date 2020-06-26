@@ -1,5 +1,6 @@
 import logging
 from base64 import b64encode
+from datetime import date, datetime
 from typing import List
 
 from yattag import Doc
@@ -7,7 +8,7 @@ from yattag import Doc
 from exporter.styles import html_style
 from qr.qrcoder import QRCoder
 from twitterapi.simple_tweet import SimpleTweet
-from datetime import date, datetime
+
 
 class HTMLExporter:
     def __init__(self, url2qrcode: bool = False) -> None:
@@ -24,11 +25,11 @@ class HTMLExporter:
         with tag("html"):
             with tag("head"):
                 self.doc.asis(html_style)
-            with tag("h1"):
-                text(title)
-            with tag("h2"):
-                text(subtitle)
             with tag("body"):
+                with tag("h1"):
+                    text(title)
+                with tag("h2"):
+                    text(subtitle)
                 with tag("div", klass="container"):
                     for tweet in tweets:
                         self._tweet2html(tweet)
@@ -58,9 +59,9 @@ class HTMLExporter:
                             self._inline_svg2data_uri(qrcoder.generate_inline_svg(url))
             with tag("div", klass="tweet-stats"):
                 with tag("div"):
-                    text (f"{tweet.created_at} ➥{tweet.retweet_count} ★{tweet.favorite_count}")
+                    text(f"{tweet.created_at} ➥{tweet.retweet_count} ★{tweet.favorite_count}")
                 with tag("div"):
-                    text (f"@{tweet.uid} id:{tweet.id}")
-    
+                    text(f"@{tweet.uid} id:{tweet.id}")
+
     def _inline_svg2data_uri(self, inline_svg: str) -> None:
         self.doc.stag("img", src=f"data:image/svg+xml;charset=utf-8;base64,{b64encode(inline_svg).decode()}")

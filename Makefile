@@ -1,6 +1,10 @@
 SHELL := /bin/sh
-include .env
-export $(shell sed 's/=.*//' .env)
+
+ifneq ("$(wildcard .env)", "")
+	include .env
+	export $(shell sed 's/=.*//' .env)
+endif
+
 export TARGET_USERNAME ?= golemproject
 export HOST_OUTPUT = ./briefs
 

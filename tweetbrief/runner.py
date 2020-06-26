@@ -75,8 +75,10 @@ def main() -> None:
         logger.warning("BRIEF_MAX_TWEETS must be an integer! Setting to default (30)...")
         brief_max_tweets = 30
 
-    if not isinstance(url2qrcode, bool):
-        logger.warning("URL2QR must be a boolean!Setting to default (True)...")
+    try:
+        url2qrcode = bool(url2qrcode)
+    except ValueError:
+        logger.warning("URL2QR must be a boolean! Setting to default (True)...")
         url2qrcode = True
 
     if brief_output is not None:
@@ -109,14 +111,21 @@ def main() -> None:
     logger.info("Exporting brief...")
 
     exporter = PDFExporter(url2qrcode)
-    date_str = datetime.now().strftime('%Y-%m-%d')
-    period_desc = "Daily" if brief_period == 1 else \
-                  "Weekly" if brief_period == 7 else \
-                  "Monthly" if 30 <= brief_period <= 31 else \
-                  f"Last {brief_period} days"
+    date_str = datetime.now().strftime("%Y-%m-%d")
+    period_desc = (
+        "Daily"
+        if brief_period == 1
+        else "Weekly"
+        if brief_period == 7
+        else "Monthly"
+        if 30 <= brief_period <= 31
+        else f"Last {brief_period} days"
+    )
 
     title = f"{period_desc} Twitter Brief for @{target_username} ({date_str})"
-    subtitle = f"Excluding RTs, top {single_author_max_tweets} tweets/author, {datetime.now().strftime('%H:%M:%S UTC')}"
+    subtitle = (
+        f"Excluding RTs, top {single_author_max_tweets} tweets/author, {datetime.now().strftime('%H:%M:%S UTC')}"
+    )
     pdf = exporter.export(tweets_in_brief, title=title, subtitle=subtitle)
 
     filename = f"tweetbrief-{target_username}-{period_desc.lower()}-{date_str}.pdf"
