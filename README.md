@@ -49,10 +49,10 @@ AWS_DEFAULT_REGION=...
 CONSUMER_KEY=..
 CONSUMER_SECRET=...
 DROPBOX_ACCESS_TOKEN=...
-HOST_OUTPUT=./briefs
+HOST_OUTPUT=./output
 BRIEF_OUTPUT=/output
-BRIEF_PERIOD=3
-BRIEF_MAX_TWEETS=50
+BRIEF_PERIOD=1
+BRIEF_MAX_TWEETS=32
 SINGLE_AUTHOR_MAX_TWEETS=2
 URL2QR=False
 TARGET_USERNAME=WildlandIO
@@ -75,19 +75,17 @@ For a cloud deployment, the following parameters are required:
     - `AWSLambdaFullAccess`
     - `IAMFullAccess`
 
-- `AWS_REGION` -- the AWS region in which resources will be created.
+- `AWS_DEFAULT_REGION` -- the AWS region in which resources will be created.
 
 ### Deployment
 
 The deployment process are peformed using one of the available scripts:
 
-- `./scripts/aws-deployment.sh` for AWS deployment,
-
-- `./scripts/docker-deployment.sh` for local deployment.
+- `./docker-compose.aws.yaml` for AWS deployment via `docker-compose`,
 
 - `./docker-compose.yaml` for local deployments via `docker-compose`.
 
-Both of them require Docker and Docker Compose installed. In case of AWS, it is also needed to have AWS CLI v2.
+Both of them require Docker and Docker Compose installed.
 
 ## How
 

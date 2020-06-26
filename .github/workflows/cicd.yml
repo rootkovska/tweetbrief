@@ -20,6 +20,10 @@ jobs:
           CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
           CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+          BRIEF_PERIOD: 1
+          BRIEF_MAX_TWEETS: 32
+          SINGLE_AUTHOR_MAX_TWEETS: 2
+          URL2QR: True
           TARGET_USERNAME: ${{ secrets.TARGET_USERNAME }}
-        run: ./scripts/aws-deployment.sh
+        run: docker-compose -f docker-compose.aws.yaml up --build
       

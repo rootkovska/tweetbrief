@@ -19,7 +19,7 @@ RUN python -m pip install --upgrade pip \
     && python -m pipenv lock --requirements > requirements.txt \
     && python -m pip install --no-cache-dir -r requirements.txt
 
-COPY scripts/. tweetbrief/. /app/
+COPY scripts/container-startup.sh scripts/tweetbrief-execution.sh tweetbrief/. /app/
 RUN chmod +x container-startup.sh tweetbrief-execution.sh
 
 CMD ["/app/container-startup.sh"] 

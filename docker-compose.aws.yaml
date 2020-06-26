@@ -1,23 +1,25 @@
 version: '3'
 
 services:
-  tweetbrief:
-    container_name: tweetbrief
-    build: .
+  tweetbrief-aws:
+    container_name: tweetbrief-aws
+    build:
+      context: .
+      dockerfile: Dockerfile.aws
     image: tweetbrief
     env_file: 
       - .env
     environment:
+      # - AWS_ACCESS_KEY_ID=
+      # - AWS_SECRET_ACCESS_KEY=
+      # - AWS_DEFAULT_REGION=
       # - CONSUMER_KEY=
       # - CONSUMER_SECRET=
       # - DROPBOX_ACCESS_TOKEN=
       # - TARGET_USERNAME=
       # - HOST_OUTPUT=./output
-      - BRIEF_OUTPUT=/output
+      # - BRIEF_OUTPUT=/output
       - BRIEF_PERIOD=1
       - BRIEF_MAX_TWEETS=32
       - SINGLE_AUTHOR_MAX_TWEETS=2
       - URL2QR=False
-    volumes:
-      # dir for resulting briefs
-      - ${HOST_OUTPUT}:${BRIEF_OUTPUT}

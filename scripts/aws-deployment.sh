@@ -2,16 +2,6 @@
 
 export AWS_DEFAULT_OUTPUT="text"
 
-echo "Checking if .env exists ..."
-
-if [[ -f .env ]] ; then
-
-    echo "Exporting parameters from .env ..."
-
-    export $(cat .env | sed 's/#.*//g' | xargs)
-
-fi
-
 echo "Checking if all parameters are set ..."
 
 if [[ -z "${AWS_ACCESS_KEY_ID}" ]]; then
@@ -65,7 +55,7 @@ fi
 
 echo "Checking if stack exists ..."
 
-aws cloudformation describe-stacks --stack-name TweetbriefStack 1>/dev/null
+aws cloudformation describe-stacks --stack-name TweetbriefStack 1>/dev/null 2>&1
 status=$?
 
 if [[ $status -ne 0 ]] ; then
@@ -74,7 +64,7 @@ if [[ $status -ne 0 ]] ; then
 
     aws cloudformation create-stack \
         --stack-name TweetbriefStack \
-        --template-body file://aws-resources.yml \
+        --template-body file://aws-resources.yaml \
         --capabilities CAPABILITY_NAMED_IAM \
         --parameters \
             ParameterKey=ConsumerKey,ParameterValue="${CONSUMER_KEY}" \
@@ -93,7 +83,7 @@ else
     set +e
     output=$(aws cloudformation update-stack \
                 --stack-name TweetbriefStack \
-                --template-body file://aws-resources.yml \
+                --template-body file://aws-resources.yaml \
                 --capabilities CAPABILITY_NAMED_IAM \
                 --parameters \
                     ParameterKey=ConsumerKey,ParameterValue=${CONSUMER_KEY} \
@@ -123,16 +113,8 @@ else
 
 fi
 
-echo "Bulding Python function ..."
-
-docker build -t tweetbrief-aws -f Dockerfile.aws .
-
 echo "Deploying Python function to Lambda ..."
 
-docker run --rm \
-    -e AWS_ACCESS_KEY_ID \
-    -e AWS_SECRET_ACCESS_KEY \
-    -e AWS_DEFAULT_REGION \
-    tweetbrief-aws 
+aws lambda update-function-code --function-name Tweetbrief --zip-file fileb://function.zip 1>/dev/null
 
 echo "Deployment completed successfully"
