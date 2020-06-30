@@ -57,27 +57,28 @@ def main() -> None:
         single_author_max_tweets = int(single_author_max_tweets)
 
         if single_author_max_tweets > 3:
-            logger.warning("SINGLE_AUTHOR_MAX_TWEETS is greater than 3! Setting to default (3)...")
+            logger.warning("SINGLE_AUTHOR_MAX_TWEETS is greater than 3! Setting to default (3) ...")
             single_author_max_tweets = 3
     except ValueError:
-        logger.warning("SINGLE_AUTHOR_MAX_TWEETS must be an integer! Setting to default (3)...")
+        logger.warning("SINGLE_AUTHOR_MAX_TWEETS must be an integer! Setting to default (3) ...")
         single_author_max_tweets = 3
 
     try:
         brief_period = int(brief_period)
     except ValueError:
-        logger.warning("BRIEF_PERIOD must be an integer! Setting to default (1)...")
+        logger.warning("BRIEF_PERIOD must be an integer! Setting to default (1) ...")
         brief_period = 1
 
     try:
         brief_max_tweets = int(brief_max_tweets)
     except ValueError:
-        logger.warning("BRIEF_MAX_TWEETS must be an integer! Setting to default (30)...")
+        logger.warning("BRIEF_MAX_TWEETS must be an integer! Setting to default (30) ...")
         brief_max_tweets = 30
 
-    if not isinstance(url2qrcode, bool):
-        logger.warning("URL2QR must be a boolean!Setting to default (True)...")
-        url2qrcode = True
+    try:
+        url2qrcode = bool(url2qrcode)
+    except ValueError:
+        logger.warning("URL2QR must be a boolean! Setting to default (True) ...")
 
     if brief_output is not None:
         try:
