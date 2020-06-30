@@ -6,12 +6,18 @@ on:
       - master
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Build
+        run: |
+          docker build \
+            --file Dockerfile.aws \
+            --tag tweetbrief-aws .
       
       - name: Deploy
         env:
@@ -27,17 +33,18 @@ jobs:
           SINGLE_AUTHOR_MAX_TWEETS: 2
           URL2QR: True
         run: |
-          docker-compose -f docker-compose.aws.yaml up \
-            --build \
-            -e AWS_ACCESS_KEY_ID \
-            -e AWS_SECRET_ACCESS_KEY \
-            -e AWS_DEFAULT_REGION \
-            -e CONSUMER_KEY \
-            -e CONSUMER_SECRET \
-            -e DROPBOX_ACCESS_TOKEN \
-            -e TARGET_USERNAME \
-            -e BRIEF_PERIOD \
-            -e BRIEF_MAX_TWEETS \
-            -e SINGLE_AUTHOR_MAX_TWEETS \
-            -e URL2QR
+          docker run \
+            --rm \
+            --env AWS_ACCESS_KEY_ID \
+            --env AWS_SECRET_ACCESS_KEY \
+            --env AWS_DEFAULT_REGION \
+            --env CONSUMER_KEY \
+            --env CONSUMER_SECRET \
+            --env DROPBOX_ACCESS_TOKEN \
+            --env TARGET_USERNAME \
+            --env BRIEF_PERIOD \
+            --env BRIEF_MAX_TWEETS \
+            --env SINGLE_AUTHOR_MAX_TWEETS \
+            --env URL2QR \
+            tweetbrief-aws
             
