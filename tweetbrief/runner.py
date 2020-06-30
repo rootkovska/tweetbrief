@@ -110,11 +110,13 @@ def main() -> None:
     logger.info("Exporting brief...")
 
     exporter = PDFExporter(url2qrcode)
-    date_str = datetime.now().strftime('%Y-%m-%d')
-    period_desc = "Daily" if brief_period == 1 else \
-                  "Weekly" if brief_period == 7 else \
-                  "Monthly" if 30 <= brief_period <= 31 else \
-                  f"Last {brief_period} days"
+    date_str = datetime.now().strftime("%Y-%m-%d")
+    period_desc = (
+        "Daily" if brief_period == 1 else
+        "Weekly" if brief_period == 7 else
+        "Monthly" if 30 <= brief_period <= 31 else 
+        f"Last {brief_period} days"
+    )
 
     title = f"{period_desc} Twitter Brief for @{target_username} ({date_str})"
     subtitle = f"Excluding RTs, top {single_author_max_tweets} tweets/author, {datetime.now().strftime('%H:%M:%S UTC')}"
