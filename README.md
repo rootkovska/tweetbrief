@@ -22,7 +22,7 @@ This project is a user-controlled automation (packaged to conveniently run in a 
 
 Once given the above parameters, the following algorithm is used to assemble a daily brief:
 
-1. The authenication credentials (`CONSUMER_KEY` and `CONSUMER_SECRET`) are set to enable querying Twitter.
+1. The authentication credentials (`CONSUMER_KEY` and `CONSUMER_SECRET`) are set to enable querying Twitter.
 
 2. The set of accounts being followed by the `TARGET_USERNAME` is read.
 
@@ -79,7 +79,7 @@ For a cloud deployment, the following parameters are required:
 
 ### Deployment
 
-The deployment process are peformed using one of the available scripts:
+The deployment process are performed using one of the available scripts:
 
 - `./docker-compose.aws.yaml` for AWS deployment via `docker-compose`,
 
@@ -91,7 +91,7 @@ Both of them require Docker and Docker Compose installed.
 
 ### Twitter API
 
-The connection to the Twitter API is made using the Python package [tweepy](https://github.com/tweepy/tweepy). The library was chosen because of the regular realeses that are made in parallel with the releases of the new Python
+The connection to the Twitter API is made using the Python package [tweepy](https://github.com/tweepy/tweepy). The library was chosen because of the regular releases that are made in parallel with the releases of the new Python
 version.
 
 The Twitter API requires that all requests use OAuth to authenticate. So it is needed to create the authentication credentials to be able to use the API. These credentials are two text strings:
@@ -99,7 +99,7 @@ The Twitter API requires that all requests use OAuth to authenticate. So it is n
 - Consumer API Key,
 - Consumer API Secret.
 
-To obtain them, a Twitter Developer Account is needed and it must be verified by a code sent via SMS. Then, it is required to submit detailed use case information about an intended use of Twitter APIs so it can be approved by Twiiter. The last step is to create an Twitter App which provides access to the above-mentioned keys.
+To obtain them, a Twitter Developer Account is needed and it must be verified by a code sent via SMS. Then, it is required to submit detailed use case information about an intended use of Twitter APIs so it can be approved by Twitter. The last step is to create an Twitter App which provides access to the above-mentioned keys.
 
 The whole procedure is described at this [link](https://developer.twitter.com/en/docs/basics/apps/overview).
 
