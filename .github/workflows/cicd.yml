@@ -1,3 +1,4 @@
+
 name: CI/CD
 on:
   push:
@@ -21,5 +22,22 @@ jobs:
           CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
           TARGET_USERNAME: ${{ secrets.TARGET_USERNAME }}
-        run: ./scripts/aws-deployment.sh
-      
+          BRIEF_PERIOD: 1
+          BRIEF_MAX_TWEETS: 32
+          SINGLE_AUTHOR_MAX_TWEETS: 2
+          URL2QR: True
+        run: |
+          docker-compose -f docker-compose.aws.yaml up \
+            --build \
+            -e AWS_ACCESS_KEY_ID \
+            -e AWS_SECRET_ACCESS_KEY \
+            -e AWS_DEFAULT_REGION \
+            -e CONSUMER_KEY \
+            -e CONSUMER_SECRET \
+            -e DROPBOX_ACCESS_TOKEN \
+            -e TARGET_USERNAME \
+            -e BRIEF_PERIOD \
+            -e BRIEF_MAX_TWEETS \
+            -e SINGLE_AUTHOR_MAX_TWEETS \
+            -e URL2QR
+            
