@@ -7,7 +7,7 @@ from typing import Any
 
 from aws_lambda_context import LambdaContext
 from dropbox import Dropbox
-from dropbox.exceptions import AuthError, BadInputError
+from dropbox.exceptions import ApiError, AuthError, BadInputError
 
 from exporter.pdf_exporter import PDFExporter
 from twitterapi.tweet_extractor import TweetExtractor
@@ -16,7 +16,7 @@ logger = logging.getLogger()
 if logger.hasHandlers():
     logger.setLevel(logging.INFO)
 else:
-    logging.basicConfig(format="%(asctime)s %(message)s", level=logging.INFO)
+    logging.basicConfig(format="%(asctime)s %(levelname)s: %(message)s", level=logging.INFO)
 
 
 def lambda_handler(event: Any, context: LambdaContext) -> None:
@@ -135,7 +135,12 @@ def main() -> None:
         logger.info("Uploading to Dropbox...")
 
         brief_path = Path("/") / filename
+
+        try:
         dbx.files_upload(pdf.getvalue(), brief_path.as_posix())
+        except ApiError:
+            logger.error("Brief exists!")
+            raise
 
         logger.info("Brief uploaded")
 

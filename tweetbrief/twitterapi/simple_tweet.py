@@ -7,15 +7,15 @@ from utils.regex_patterns import http_pattern, url_pattern
 
 
 class SimpleTweet:
-    def __init__(
-        self, id: str, uid: str, author: str, text: str, retweet_count: int, favorite_count: int, created_at: str
-    ) -> None:
+    def __init__(self, id: str, uid: str, author: str, text: str,
+                retweet_count: int, favorite_count: int,
+                created_at: str) -> None:
         self.id = id
-        self.uid = uid
+        self.uid = uid        
         self.author = author
         self.text = self._cleanse(text)
         self.retweet_count = retweet_count
-        self.favorite_count = favorite_count
+        self.favorite_count = favorite_count  
         self.created_at = created_at
 
     def extract_urls(self, remove_http: bool = False) -> List[str]:
