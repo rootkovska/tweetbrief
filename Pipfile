@@ -43,6 +43,7 @@ Pyphen = "*"
 PySocks = "*"
 WeasyPrint = "*"
 aws-lambda-context = "*"
+emoji = "*"
 
 [requires]
 python_version = "3.6"
