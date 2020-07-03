@@ -74,6 +74,7 @@ For a cloud deployment, the following parameters are required:
     - `AWSCloudFormationFullAccess`
     - `AWSLambdaFullAccess`
     - `IAMFullAccess`
+    - optional: to restrict the above permissions, create a custom policy with actions included in `aws-policy.json` file (reference: [IAM JSON Policy Reference](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html))
 
 - `AWS_DEFAULT_REGION` -- the AWS region in which resources will be created.
 
@@ -110,3 +111,29 @@ Uploading files to Dropbox is implemented using the Python package [dropbox](htt
 ### AWS
 
 An automated deployment to AWS is performed using a CloudFormation template which describe all resources, roles and permissions needed to execute the application. In addition, a GitHub Workflow is configured so the deployment is triggered on every push to the master branch.
+
+## DEBUG
+
+The following commands might be helpful in debugging:
+
+* to get info about the function:
+```sh
+docker run \
+    --interactive \
+    --env-file .env \
+    tweetbrief-aws \
+        aws lambda get-function \
+            --function-name Tweetbrief
+```
+
+* to trigger the function:
+```sh
+docker run \
+    --interactive \
+    --env-file .env \
+    tweetbrief-aws \
+        aws lambda invoke \
+            --function-name Tweetbrief \
+            --invocation-type Event \
+            /dev/null
+```

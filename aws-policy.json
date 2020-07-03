@@ -1,0 +1,134 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:DetectStackDrift",
+                "cloudformation:CancelUpdateStack",
+                "cloudformation:UpdateTerminationProtection",
+                "cloudformation:DescribeStackResource",
+                "cloudformation:CreateChangeSet",
+                "cloudformation:DeleteChangeSet",
+                "cloudformation:ContinueUpdateRollback",
+                "cloudformation:DetectStackResourceDrift",
+                "cloudformation:DescribeStackEvents",
+                "cloudformation:UpdateStack",
+                "cloudformation:DescribeChangeSet",
+                "cloudformation:ExecuteChangeSet",
+                "cloudformation:ListStackResources",
+                "cloudformation:SetStackPolicy",
+                "cloudformation:DescribeStackResources",
+                "cloudformation:SignalResource",
+                "cloudformation:GetTemplateSummary",
+                "cloudformation:DescribeStacks",
+                "cloudformation:DescribeStackResourceDrifts",
+                "cloudformation:GetStackPolicy",
+                "cloudformation:CreateStack",
+                "cloudformation:GetTemplate",
+                "cloudformation:DeleteStack",
+                "cloudformation:TagResource",
+                "cloudformation:UntagResource",
+                "cloudformation:ListChangeSets"
+            ],
+            "Resource": "arn:aws:cloudformation:*:*:stack/TweetbriefStack/*"
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:CreateUploadBucket",
+                "cloudformation:RegisterType",
+                "cloudformation:DescribeStackDriftDetectionStatus",
+                "cloudformation:ListExports",
+                "cloudformation:ListStacks",
+                "cloudformation:SetTypeDefaultVersion",
+                "cloudformation:DescribeType",
+                "cloudformation:ListImports",
+                "cloudformation:ListTypes",
+                "cloudformation:DescribeTypeRegistration",
+                "cloudformation:DeregisterType",
+                "cloudformation:ListTypeRegistrations",
+                "cloudformation:EstimateTemplateCost",
+                "cloudformation:DescribeAccountLimits",
+                "cloudformation:CreateStackSet",
+                "cloudformation:ValidateTemplate",
+                "cloudformation:ListTypeVersions"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "VisualEditor2",
+            "Effect": "Allow",
+            "Action": [
+                "iam:GetRole",
+                "iam:UpdateAssumeRolePolicy",
+                "iam:ListRoleTags",
+                "iam:UntagRole",
+                "iam:TagRole",
+                "iam:PutRolePermissionsBoundary",
+                "iam:CreateRole",
+                "iam:AttachRolePolicy",
+                "iam:PutRolePolicy",
+                "iam:DeleteRolePermissionsBoundary",
+                "iam:DetachRolePolicy",
+                "iam:DeleteRolePolicy",
+                "iam:UpdateRole",
+                "iam:ListRolePolicies",
+                "iam:GetRolePolicy"
+            ],
+            "Resource": "arn:aws:iam::*:role/TweetbriefRole"
+        },
+        {
+            "Sid": "VisualEditor3",
+            "Effect": "Allow",
+            "Action": [
+                "lambda:CreateFunction",
+                "lambda:TagResource",
+                "lambda:ListVersionsByFunction",
+                "lambda:DeleteProvisionedConcurrencyConfig",
+                "lambda:InvokeAsync",
+                "lambda:GetFunctionConfiguration",
+                "lambda:UntagResource",
+                "lambda:PutFunctionConcurrency",
+                "lambda:EnableReplication",
+                "lambda:ListProvisionedConcurrencyConfigs",
+                "lambda:DisableReplication",
+                "lambda:GetProvisionedConcurrencyConfig",
+                "lambda:ListTags",
+                "lambda:DeleteFunction",
+                "lambda:GetAlias",
+                "lambda:InvokeFunction",
+                "lambda:GetFunction",
+                "lambda:ListAliases",
+                "lambda:UpdateFunctionConfiguration",
+                "lambda:UpdateAlias",
+                "lambda:UpdateFunctionCode",
+                "lambda:ListFunctionEventInvokeConfigs",
+                "lambda:AddPermission",
+                "lambda:GetFunctionConcurrency",
+                "lambda:PutProvisionedConcurrencyConfig",
+                "lambda:DeleteAlias",
+                "lambda:PublishVersion",
+                "lambda:DeleteFunctionConcurrency",
+                "lambda:RemovePermission",
+                "lambda:GetPolicy",
+                "lambda:CreateAlias"
+            ],
+            "Resource": [
+                "arn:aws:lambda:*:*:function:Tweetbrief",
+                "arn:aws:lambda:*:*:function:Tweetbrief:*"
+            ]
+        },
+        {
+            "Sid": "VisualEditor4",
+            "Effect": "Allow",
+            "Action": [
+                "lambda:ListFunctions",
+                "lambda:GetAccountSettings"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
